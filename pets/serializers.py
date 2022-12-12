@@ -22,7 +22,6 @@ class PetSerializer(serializers.Serializer):
     def create(self, validated_data: dict):
         group_dict = validated_data.pop('group')
         traits_list = validated_data.pop('traits')
-        trait_all = []
 
         group , created = Group.objects.get_or_create(**group_dict)
         validated_data['group'] = group
