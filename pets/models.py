@@ -15,3 +15,7 @@ class Pet(models.Model):
         choices=PetSex.choices,
         default=PetSex.NOT_INFORMED
     )
+
+    group = models.ForeignKey(
+        'groups.Group', on_delete=models.CASCADE, related_name='pet'
+    )

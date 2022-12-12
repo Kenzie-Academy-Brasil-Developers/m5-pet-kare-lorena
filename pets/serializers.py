@@ -17,13 +17,21 @@ class PetSerializer(serializers.Serializer):
         default=PetSex.NOT_INFORMED,
     )
     group = GroupSerializer()
-    # traits = TraitSerializer(many = True)
+    traits = TraitSerializer(many=True)
 
     def create(self, validated_data: dict):
         group_dict = validated_data.pop('group')
+        traits_list = validated_data.pop('traits')
+        trait_all = []
+
+        group , created = Group.objects.get_or_create(**group_dict)
+        validated_data['group'] = group
 
         pet_obj = Pet.objects.create(**validated_data)
-        group = Group.objects.get_or_create(**group_dict, pet = pet_obj)
+        for traits in traits_list:
+            trait_obj, created = Trait.objects.get_or_create(**traits)
+            pet_obj.traits.add(trait_obj)
+
 
         return pet_obj
     
