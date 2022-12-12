@@ -19,6 +19,16 @@ class PetView(APIView):
         serializer.save()
 
         return Response(serializer.data, status.HTTP_201_CREATED)
+
+    def patch(self, request: Request, pet_id: int) -> Response:
+        pet = get_object_or_404(Pet, id=pet_id)
+
+        serializer = PetSerializer(pet, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+
+        serializer.save()
+
+        return(Response.serializer.data)
     
     def delete(self, request: Request, pet_id: int) -> Response:
         pet = get_object_or_404(Pet, id=pet_id)

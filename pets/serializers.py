@@ -23,7 +23,14 @@ class PetSerializer(serializers.Serializer):
         group_dict = validated_data.pop('group')
 
         pet_obj = Pet.objects.create(**validated_data)
-        group, created = Group.objects.get_or_create(**group_dict)
-        pet_obj.group.add(group)
+        group = Group.objects.get_or_create(**group_dict, pet = pet_obj)
 
         return pet_obj
+    
+    def update(self, instance, validated_data: dict):
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+
+        instance.save()
+
+        return instance
