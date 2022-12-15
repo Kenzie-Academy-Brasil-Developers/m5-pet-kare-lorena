@@ -28,7 +28,7 @@ class PetView(APIView):
 
         serializer.save()
 
-        return(Response.serializer.data)
+        return Response(serializer.data, status.HTTP_201_CREATED)
     
     def delete(self, request: Request, pet_id: int) -> Response:
         pet = get_object_or_404(Pet, id=pet_id)
